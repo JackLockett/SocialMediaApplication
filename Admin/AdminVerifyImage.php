@@ -1,0 +1,23 @@
+<?php
+include_once("AdminLogger.php");
+
+$db = new SQLite3('/Applications/XAMPP/xamppfiles/databases/SocialMedia.db');
+
+$stmt = "UPDATE User SET userImage = :image WHERE id = :id";
+$sql = $db->prepare($stmt);
+$sql->bindParam(':id', $_GET['id'], SQLITE3_TEXT);
+$sql->bindParam(':image', $_GET['image'], SQLITE3_TEXT);
+
+$sql->execute();
+
+$stmt = "DELETE FROM Images WHERE user = :id";
+$sql = $db->prepare($stmt);
+$sql->bindParam(':id', $_GET['id'], SQLITE3_TEXT);
+
+verifiyImageLog();
+
+$sql->execute();
+
+header("Location: /Admin/AdminVerifyImages.php?verifiedimage=true");
+
+?>
